@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Write Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='b6.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 50px;
+            color:#20B2AA;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: #111;
+        }
+
+        .form-container label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 500;
+        }
+
+        .form-container input,
+        .form-container textarea,
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #20B2AA; 
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background: #2E8B57; 
+        }
+
+        .form-container a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #20B2AA;
+            font-weight: 500;
+        }
+
+        .form-container a:hover {
+            text-decoration: underline;
+        }
+
+        .preview {
+            margin-top: 10px;
+        }
+
+        .preview img, .preview video {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Writtique
+</header>
+
+<div class="form-container">
+    <h2>Write a New Blog</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <label>Title:</label>
+        <input type="text" name="title" required>
+        
+        <label>Content:</label>
+        <textarea name="content" rows="6" cols="50" required></textarea>
+        
+        <!-- Genre Dropdown -->
+        <label>Genre:</label>
+        <select name="genre" required>
+            <option value="Nature">Nature</option>
+            <option value="Life">Life</option>
+            <option value="Party">Party</option>
+            <option value="Technology">Technology</option>
+            <option value="Travel">Travel</option>
+            <option value="Other">Other</option>
+        </select>
+        
+        <label>Upload Photo:</label>
+        <input type="file" name="image" accept="image/*" onchange="previewImage(event)">
+        
+        <label>Upload Video:</label>
+        <input type="file" name="video" accept="video/*" onchange="previewVideo(event)">
+
+        <div class="preview">
+            <img id="imagePreview" style="display:none;">
+            <video id="videoPreview" controls style="display:none;"></video>
+        </div>
+
+        <button type="submit">Post</button>
+    </form>
+    
+    <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+</div>
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imagePreview');
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    }
+
+    function previewVideo(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('videoPreview');
+        if (file) {
+            preview.src = URL.createObjectURL(file);
+            preview.style.display = 'block';
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    }
+</script>
+
+<footer>
+</footer>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='b6.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 50px;
+            color:#20B2AA;
+        }
+
+        .board-container {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 30px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .board-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #111;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #20B2AA;
+            color: white;
+            font-size: 16px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .board-container a {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #20B2AA;
+            font-weight: 500;
+        }
+
+        .board-container a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Writtique
+    </header>
+
+    <div class="board-container">
+        <h2>Leaderboard</h2>
+        <table>
+            <tr>
+                <th>Rank</th>
+                <th>Email</th>
+                <th>No. of Posts</th>
+            </tr>
+            {% for author, count in leaderboard %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ author }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+    </div>
+
+    <footer>
+    </footer>
+</body>
+</html>

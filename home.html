@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Blog Home</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background: url("{{ url_for('static', filename='b6.jpg') }}") ;
+            background-size: cover;
+            
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 40px;
+            color: black;
+        }
+
+        h2 {
+            text-align: center;
+            color: black;
+            font-size: 28px;
+        }
+
+        h3 {
+            text-align: center;
+            color: #111;
+        }
+
+        .post {
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 95%; /* flexible width for phones */
+    margin: 20px auto;
+    background: #fff;
+}
+
+
+        .post img, .post video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+
+        .post video {
+            background: #000;
+        }
+
+        .post button, .btn {
+            margin: 5px 5px 0 0;
+            padding: 6px 12px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background: #20B2AA;
+            color: #fff;
+            font-weight: bold;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .post button:hover, .btn:hover {
+            background: black;
+        }
+
+        .footer-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #333;
+            color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+        }
+
+        .footer-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .footer-menu a:hover {
+            background: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /* Top navigation */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 20px;
+            border-radius: 50px;
+        }
+
+        .top-nav .center {
+            flex: 1;
+            text-align: center;
+        }
+
+        .top-nav form {
+            display: inline-block;
+        }
+
+        .top-nav input[type="text"], .top-nav select {
+            padding: 15px;
+            border-radius: 50px;
+            border: 1px solid #0b9c9c;
+            margin-right: 10px;
+        }
+
+        .top-nav button {
+            padding: 10px 30px;
+            border-radius: 50px;
+        }
+
+        /* Comment section */
+        .comment-section {
+            margin-top: 15px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .comment {
+            background: #f9f9f9;
+            padding: 5px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+        }
+
+        .comment small {
+            color: #555;
+        }
+
+        /* Streak */
+        .streak {
+            text-align:right;
+            margin:10px 0;
+            font-size:20px;
+            font-weight:bold;
+            color:#FF6347;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>Welcome, {{ user }}</h2>
+
+    <!-- ---------------- STREAK ---------------- -->
+    {% if streak %}
+    <div class="streak">
+         🔥Streak: {{ streak }} day{{ 's' if streak > 1 else '' }}!  
+    </div>
+    {% endif %}
+
+    <!-- Top Navigation -->
+    <div class="top-nav">
+        <a href="{{ url_for('profile') }}" class="btn">👤 My Profile</a>
+        
+        <div class="center">
+            <form method="GET" action="{{ url_for('home') }}">
+                <input type="text" name="search" placeholder="Search posts" value="{{ request.args.get('search','') }}">
+                
+                <!-- Genre Dropdown -->
+                <select name="genre">
+                    <option value="">All Genres</option>
+                    <option value="Nature" {% if request.args.get('genre') == 'Nature' %}selected{% endif %}>Nature</option>
+                    <option value="Life" {% if request.args.get('genre') == 'Life' %}selected{% endif %}>Life</option>
+                    <option value="Party" {% if request.args.get('genre') == 'Party' %}selected{% endif %}>Party</option>
+                    <option value="Technology" {% if request.args.get('genre') == 'Technology' %}selected{% endif %}>Technology</option>
+                    <option value="Travel" {% if request.args.get('genre') == 'Travel' %}selected{% endif %}>Travel</option>
+                    <option value="Other" {% if request.args.get('genre') == 'Other' %}selected{% endif %}>Other</option>
+                </select>
+
+                <button type="submit" class="btn">🔍 Filter</button>
+            </form>
+        </div>
+        
+        <a href="{{ url_for('logout') }}" class="btn">🚪 Logout</a>
+    </div>
+    <hr>
+
+    <!-- Blog Posts -->
+    <h3>All Posts</h3>
+    {% for post in posts %}
+        <div class="post">
+            <h4>
+    <a href="{{ url_for('view_post', post_id=post[0]) }}" style="text-decoration:none; color:#111;">
+        {{ post[1] }}
+    </a>
+</h4>
+
+            <p class="post-content">{{ post[2] }}</p>
+            <small>Genre: {{ post[7] }}</small>
+
+            {% if post[5] %}
+                <img src="{{ url_for('static', filename='uploads/' ~ post[5]) }}" alt="Post Image">
+            {% endif %}
+
+            {% if post[6] %}
+                <video src="{{ url_for('static', filename='uploads/' ~ post[6]) }}" controls autoplay muted loop></video>
+            {% endif %}
+
+            <small>By {{ post[3] }} on {{ post[4] }}</small>
+            
+            {% if post[3] != user %}
+                <div>
+                    <a href="{{ url_for('subscribe', author_email=post[3]) }}" class="btn">🔔 Subscribe</a>
+                    <a href="{{ url_for('unsubscribe', author_email=post[3]) }}" class="btn">❌ Unsubscribe</a>
+                    <button onclick="readPost(`{{ post[2] }}`)" aria-label="Read aloud post">🔊 Read</button>
+                </div>
+            {% else %}
+                <div>
+                    <a href="{{ url_for('delete_post', post_id=post[0]) }}" class="btn">🗑️ Delete Post</a>
+                    <button onclick="readPost(`{{ post[2] }}`)" aria-label="Read aloud post">🔊 Read</button>
+                </div>
+            {% endif %}
+
+            <div class="comment-section">
+                {% if post[3] != user %}
+                    <form method="POST" action="{{ url_for('comment', post_id=post[0]) }}">
+                        <textarea name="content" rows="2" placeholder="Write a comment..." required></textarea><br>
+                        <button type="submit" class="btn">💬 Post Comment</button>
+                    </form>
+                {% else %}
+                    <p><i>As the author, you can only reply to comments below.</i></p>
+                {% endif %}
+
+                {% for c in comments[post[0]] %}
+                    <div class="comment">
+                        <b>{{ c[0] }}</b>: {{ c[1] }} <br>
+                        <small>on {{ c[2] }}</small>
+                        {% if post[3] == user %}
+                            <form method="POST" action="{{ url_for('comment', post_id=post[0]) }}">
+                                <textarea name="content" rows="1" placeholder="Reply..." required></textarea><br>
+                                <button type="submit" class="btn">↩️ Reply</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p>No posts yet!</p>
+    {% endfor %}
+
+    <!-- Bottom Menu -->
+    <div class="footer-menu">
+        <a href="{{ url_for('write') }}">✍️ Write</a>
+        <a href="{{ url_for('leaderboard') }}">🏆 Leaderboard</a>
+        <a href="{{ url_for('subscriptions') }}">🔔 Subscriptions</a>
+    </div>
+
+    <script>
+    let currentPostIndex = 0;
+
+    function readPost(content) {
+        const msg = new SpeechSynthesisUtterance(content);
+        msg.lang = "en-US";
+        window.speechSynthesis.cancel(); 
+        window.speechSynthesis.speak(msg);
+    }
+
+    document.addEventListener("keydown", function(e) {
+        let posts = document.querySelectorAll(".post-content");
+
+        
+        if (e.shiftKey && e.key === "R") {
+            if (posts.length > 0) {
+                readPost(posts[currentPostIndex].innerText);
+                currentPostIndex = (currentPostIndex + 1) % posts.length; 
+            }
+        }
+
+        
+        if (e.shiftKey && !isNaN(e.key)) {
+            let index = parseInt(e.key) - 1;
+            if (posts[index]) readPost(posts[index].innerText);
+        }
+    });
+</script>
+
+</body>
+</html>

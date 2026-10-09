@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Subscriptions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='b6.jpg') }}") ;
+            background-size: cover;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 50px;
+            color:#20B2AA;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.4);
+        }
+
+        .sub-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .sub-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #222;
+            letter-spacing: 1px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .user-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #20B2AA;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin: 0 auto 15px auto;
+        }
+
+        .user-card h3 {
+            margin: 8px 0 5px 0;
+            font-size: 18px;
+            color: #111;
+        }
+
+        .user-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .unsubscribe-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 14px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .unsubscribe-btn:hover {
+            background: #e60000;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            text-decoration: none;
+            color: #20B2AA;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #fff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        Writtique
+    </header>
+
+    <div class="sub-container">
+        <h2>My Subscriptions</h2>
+        {% if subscribed_users %}
+            <div class="card-grid">
+                {% for user in subscribed_users %}
+                    <div class="user-card">
+                       
+                        <div class="user-avatar">{{ user[0].upper() }}</div>
+                        <h3>{{ user }}</h3>
+                        <p>{{ user }}</p>
+                        <a href="{{ url_for('unsubscribe', author_email=user) }}" class="unsubscribe-btn">
+                            Unsubscribe
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="text-align: center; color: gray;">You haven’t subscribed to anyone yet.</p>
+        {% endif %}
+        <a href="{{ url_for('home') }}" class="back-link">⬅ Back to Home</a>
+    </div>
+
+    <footer>
+        &copy; 2025 Writtique. All rights reserved.
+    </footer>
+</body>
+</html>

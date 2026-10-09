@@ -1,0 +1,141 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #fff;
+  color: #333;
+  line-height: 1.6;
+
+}
+
+/* Header (logo + nav) */
+header {
+  border-bottom: 1px solid #eee;
+  padding: 20px 0;
+  text-align: center;
+}
+
+header .logo {
+  font-family: 'Brush Script MT', cursive;
+  font-size: 40px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+/* Navigation Bar */
+nav {
+  margin-top: 15px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+nav ul li {
+  position: relative;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 5px;
+  transition: color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li.active a {
+  color: #d4af37; /* gold highlight */
+}
+
+/* Hero / Banner Image */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background: url("/static/banner.jpg") center/cover no-repeat;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-text {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #fff;
+}
+
+.hero-text h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.hero-text span {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Blog Section */
+.blog-post {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.blog-post h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.blog-post p {
+  font-size: 16px;
+  color: #555;
+}
+
+/* About Me / Sidebar box */
+.sidebar-box {
+  border: 1px solid #eee;
+  padding: 20px;
+  text-align: center;
+  margin: 30px auto;
+  max-width: 300px;
+}
+
+.sidebar-box h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.sidebar-box p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Footer */
+footer {
+  border-top: 1px solid #eee;
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+}

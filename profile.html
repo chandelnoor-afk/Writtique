@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ user }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background: url("{{ url_for('static', filename='b6.jpg') }}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 50px;
+            color: #20B2AA;
+        }
+
+        /* Global badges at top */
+        .top-badges {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-badge {
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #fff;
+            font-size: 16px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .gold { background-color: #ffd700; color: #000; }
+        .silver { background-color: #C0C0C0; color: #000; }
+        .bronze { background-color: #CD7F32; color: #fff; }
+
+        .profile-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header h2 {
+            margin: 0;
+            font-size: 28px;
+            color: #20B2AA;
+        }
+
+        .profile-header small {
+            color: gray;
+            font-size: 15px;
+        }
+
+        .post {
+            border-bottom: 1px solid #ddd;
+            padding: 20px 0;
+        }
+
+        .post:last-child {
+            border-bottom: none;
+        }
+
+        .post h3 {
+            margin: 0 0 10px;
+            color: #111;
+            font-size: 22px;
+        }
+
+        .post p {
+            margin: 0 0 12px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .post small {
+            color: gray;
+            font-size: 13px;
+        }
+
+        .no-posts {
+            text-align: center;
+            color: #777;
+            font-size: 16px;
+            padding: 30px;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #20B2AA;
+            font-weight: 500;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+        img {
+            max-width: 150px;
+            margin: 10px 0;
+        }
+
+        video {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    Writtique
+</header>
+
+<!-- ---------------- TOP BADGES ---------------- -->
+<div class="top-badges">
+    {% set post_count = my_posts|length %}
+    {% if post_count >= 10 %}
+        <div class="top-badge gold">10+ Posts</div>
+    {% elif post_count >= 5 %}
+        <div class="top-badge bronze">5+ Posts</div>
+    {% else %}
+        <div class="top-badge silver">{{ post_count }} Posts</div>
+    {% endif %}
+</div>
+
+<div class="profile-container">
+
+    <div class="profile-header">
+        <h2>{{ user }}'s Profile</h2>
+        <small>Explore all blog posts written by {{ user }}</small>
+    </div>
+
+    <!-- ---------------- POSTS ---------------- -->
+    {% if my_posts %}
+        {% for post in my_posts %}
+            <div class="post">
+                <h3>{{ post[1] }}</h3>
+                <p>{{ post[2] }}</p>
+                {% if post[5] %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ post[5]) }}">
+                {% endif %}
+                {% if post[6] %}
+                    <video controls>
+                        <source src="{{ url_for('static', filename='uploads/' ~ post[6]) }}">
+                    </video>
+                {% endif %}
+                <small>Posted on {{ post[4] }}</small>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-posts">
+            <p>{{ user }} hasn’t written any posts yet.</p>
+        </div>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}" class="back-home">⬅ Back to Home</a>
+</div>
+
+</body>
+</html>
